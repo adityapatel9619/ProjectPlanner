@@ -1,0 +1,140 @@
+﻿@model ProjectPlanner.Models.RegistrationViewModel;
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_LayoutForm.cshtml";
+}
+
+<h1>Register</h1>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Register">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (ViewBag.Message != null)
+            {
+                <div class="form-group" style="color:green;">@ViewBag.Message</div>
+            }
+            @if(ViewBag.Error != null){
+                <div class="form-group" style="color:red;">@ViewBag.Error</div>
+            }
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label" id="lblUsername"></label>
+                <input asp-for="UserName" class="form-control" id="tbUsername"/>
+                <span asp-validation-for="UserName" class="text-danger" id="msgUsername"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Register" class="btn btn-primary" id="btnRegister" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    Already Registerd ? <a asp-action="Login">Login</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<script>
+    // window.onload = function(){
+    //     alert("I am back ");
+    // };
+
+    document.getElementById("tbUsername").addEventListener("blur",function(){
+        validateUsername();
+
+        console.log(document.getElementById("tbUsername").value);
+    });
+
+    
+
+    //Validate Username
+    function validateUsername() {
+        var username = document.getElementById("tbUsername").value;
+
+        fetch("https://localhost:44333/api/Account/ValidateUserName", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: "",
+                userName: username
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Handle response data
+            // console.log(data);
+            // console.log('---------');
+            const isTaken = data.isUsernameTaken;
+            // console.log(isTaken);
+
+            // console.log('**********');
+
+                const input = document.getElementById("tbUsername");
+                const btnSubmit = document.getElementById("btnRegister");
+                const message = document.getElementById("msgUsername");
+
+            if(isTaken)
+            {
+
+                input.style.border = "1px solid red";
+                btnSubmit.disabled = true;
+                message.innerText = data.message;
+                message.classList.remove("text-success");     //Remove green color
+                message.classList.add("text-danger");         //Add red color
+            }
+            else
+            {
+                input.style.border = "1px solid green";
+                btnSubmit.disabled = false;
+                message.innerText =data.message;
+                message.classList.remove("text-danger");     // Remove red color
+                message.classList.add("text-success");       // Add green color
+
+            }
+
+
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Kindly enter Username !!!");
+        });
+    }
+
+</script>
