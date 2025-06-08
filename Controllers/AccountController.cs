@@ -6,6 +6,7 @@ using ProjectPlanner.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using ProjectPlanner.Common;
+using System.Reflection;
 
 namespace ProjectPlanner.Controllers
 {
@@ -121,6 +122,34 @@ namespace ProjectPlanner.Controllers
         public IActionResult Dashboard()
         {
             ViewBag.Name = HttpContext.User.Identity.Name;
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult NewEmployee()
+        {
+            return View();
+        }
+
+        public IActionResult GetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult GetPassword(LoginViewModel viewModel)
+        {
+
+            if (viewModel.UserNameOrEmail != null)
+            {
+                clsGlobal global = new clsGlobal();
+                var user = _account.GetRegistrations().Where(x => (x.UserName == viewModel.UserNameOrEmail || x.Email == viewModel.UserNameOrEmail)).FirstOrDefault();
+
+                if (user != null)
+                {
+                    ViewBag.FetchPassword = global.Decrypt(user.Password);
+                }
+            }
             return View();
         }
     }

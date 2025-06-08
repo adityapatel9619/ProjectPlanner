@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewData["Title"] = "NewEmployee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>NewEmployee</h1>
+<form method="post">
+    <div class="mb-3">
+        <label for="empName" class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="empName" name="empName" required>
+    </div>
+    <div class="mb-3">
+        <label for="empEmail" class="form-label">Email</label>
+        <input type="email" class="form-control" id="empEmail" name="empEmail" required>
+    </div>
+    <div class="mb-3">
+        <label for="empPhone" class="form-label">Phone</label>
+        <input type="tel" class="form-control" id="empPhone" name="empPhone" required>
+    </div>
+    <div class="mb-3">
+        <label for="empDept" class="form-label">Department</label>
+        <select id="ddlempDept" class="form-control">
+            <option value="0" selected>N/A</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary" id="btnSavenNewEmployee">Save Employee</button>
+</form>

@@ -4,9 +4,9 @@
     Layout = "~/Views/Shared/_LayoutForm.cshtml";
 }
 
-<h1>Register</h1>
-<div class="row">
-    <div class="col-md-4">
+@* <h1 style="text-align:center;">Register</h1> *@
+@* <div class="row"> *@
+    @* <div class="col-md-4"> *@
         <form asp-action="Register">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @if (ViewBag.Message != null)
@@ -56,8 +56,8 @@
                 <input type="submit" value="Register" class="btn btn-primary" id="btnRegister" />
             </div>
         </form>
-    </div>
-</div>
+@*     </div> *@
+@* </div> *@
 
 <div>
     Already Registerd ? <a asp-action="Login">Login</a>
