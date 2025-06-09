@@ -26,3 +26,30 @@
     </div>
     <button type="submit" class="btn btn-primary" id="btnSavenNewEmployee">Save Employee</button>
 </form>
+
+<script>
+
+    window.onload = function(){
+        BindData();
+    }
+
+
+    function BindData(){
+            fetch('https://localhost:44333/api/Account/BindDepartments')
+            .then(response => response.json())
+            .then(data => {
+
+                const ddlempDept = document.getElementById('ddlempDept');
+
+                  data.forEach(dept => {
+                    const option = document.createElement('option');
+                    option.value = dept.nId;
+                    option.textContent = dept.sDeptName;
+                    ddlempDept.appendChild(option);
+                  });
+                })
+                .catch(error => {
+                  console.error('Error loading departments:', error);
+            });
+    }
+</script>
